@@ -58,8 +58,47 @@ precision2 = accuracy_score(y,y_pred2)
 
 print(matriz2)
 print(precision2)
+#%%
 
+#TRAIN DATA
+x_train=X2[:500]
+y_train=y[:500]
+print(len(x_train))
 
+# TEST DATA
 
+x_test=X2[500:]
+y_test=y[500:]
 
+clasif1 = KNeighborsClassifier(n_neighbors=5)
+clasif1.fit(x_train, y_train)
 
+y_pred1=clasif1.predict(x_test)
+acc1=accuracy_score(y_test, y_pred1)
+
+print(acc1)
+
+clasif2 = KNeighborsClassifier(n_neighbors=10)
+clasif2.fit(x_train, y_train)
+
+y_pred2=clasif2.predict(x_test)
+acc2=accuracy_score(y_test, y_pred2)
+
+print(acc2)
+
+k_valores = [5,10,15,20,25,30,40,45,50]
+precisiones = []
+
+for k in k_valores:
+    modelo = KNeighborsClassifier(n_neighbors=k)
+    
+    modelo.fit(x_train, y_train)
+    y_pred_def=modelo.predict(x_test)
+    
+    precisiones.append(accuracy_score(y_test,y_pred_def))
+
+plt.plot(k_valores, precisiones, marker='o')
+plt.xlabel("Valores de K")
+plt.ylabel("Precision del modelo en test")
+plt.grid()
+plt.show()
